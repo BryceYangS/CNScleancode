@@ -19,7 +19,7 @@ public class TaxRefundTest {
         TaxRefund tax = new TaxRefund( household, 38200000, 5000000 );
         
         System.out.println( "=======================================================" );
-        System.out.println( "[" + tax.getHousehold().getHouseholder().getName() + "] 님의 연말정신 결과" );
+        System.out.println( "[" + household.getHouseholder().getName() + "] 님의 연말정신 결과" );
         System.out.println( "=======================================================" );
         System.out.println( "총 급여액 : " + format.format( tax.getTotalSalary() ) );
         System.out.println( "총 공제금액 : " + format.format( tax.calculateDeduction() ) );
@@ -35,14 +35,14 @@ public class TaxRefundTest {
             }
             System.out.println( "부양가족 : " + format.format( sum ) );
         }
-        if ( tax.countDisabled() > 0 ) {
-            System.out.println( "장애인 : " + format.format( tax.countDisabled() * 2000000 ) );
+        if ( household.countDisabled() > 0 ) {
+            System.out.println( "장애인 : " + format.format( household.countDisabled() * 2000000 ) );
         }
-        if ( tax.countSeniorPerson() > 0 ) {
-            System.out.println( "경로우대 : " + format.format( tax.countSeniorPerson() * 1000000 ) );
+        if ( household.countSeniorPerson() > 0 ) {
+            System.out.println( "경로우대 : " + format.format( household.countSeniorPerson() * 1000000 ) );
         }
-        if ( tax.countChildren() > 0 ) {
-            System.out.println( "자녀양육비 : " + format.format( tax.countChildren() * 1000000 ) );
+        if ( household.countChildren() > 0 ) {
+            System.out.println( "자녀양육비 : " + format.format( household.countChildren() * 1000000 ) );
         }
         System.out.println( "-------------------------------------------------------" );
         System.out.println( "지급된 소득세 : " + format.format( tax.getPaidIncomeTax() ) );
@@ -76,14 +76,14 @@ public class TaxRefundTest {
             }
             System.out.println( "부양가족 : " + format.format( sum ) );
         }
-        if ( tax.countDisabled() > 0 ) {
-            System.out.println( "장애인 : " + format.format( tax.countDisabled() * 2000000 ) );
+        if ( household1.countDisabled() > 0 ) {
+            System.out.println( "장애인 : " + format.format( household1.countDisabled() * 2000000 ) );
         }
-        if ( tax.countSeniorPerson() > 0 ) {
-            System.out.println( "경로우대 : " + format.format( tax.countSeniorPerson() * 1000000 ) );
+        if ( household1.countSeniorPerson() > 0 ) {
+            System.out.println( "경로우대 : " + format.format( household1.countSeniorPerson() * 1000000 ) );
         }
-        if ( tax.countChildren() > 0 ) {
-            System.out.println( "자녀양육비 : " + format.format( tax.countChildren() * 1000000 ) );
+        if ( household1.countChildren() > 0 ) {
+            System.out.println( "자녀양육비 : " + format.format( household1.countChildren() * 1000000 ) );
         }
         System.out.println( "-------------------------------------------------------" );
         System.out.println( "지급된 소득세 : " + format.format( tax.getPaidIncomeTax() ) );

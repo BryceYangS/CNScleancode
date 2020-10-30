@@ -2,6 +2,18 @@ package howtocode.taxrefund;
 
 public class TaxRefund {
 
+    private final long HOUSEHOLDER_BASE_DEDUCTION = 1500000;
+    private final long SPOUSE_BASE_DEDUCTION = 1500000;
+    private final long DEPENDENT_BASE_DEDUCTION = 1500000;
+
+    private final long DISABLED_DEDUCTION = 2000000;
+    private final long SENIOR_DEDUCTION = 1000000;
+    private final long CHILD_DEDUCTION = 1000000;
+
+    private final long TAX_RATE_STANDARD_1 = 12000000L;
+    private final long TAX_RATE_STANDARD_2 = 46000000L;
+    private final long TAX_RATE_STANDARD_3 = 88000000L;
+
     private final Household household;    // 가구
     
     private final long totalSalary;       // 총 급여액
@@ -43,27 +55,31 @@ public class TaxRefund {
     }
 
     public long calculateDeduction() {
-        
-        // 기본 공제
-        
-        long deduction = 1500000;
-        
+        return calculateBaseDeduction() + calculateAdditionalDeduction();
+    }
+
+    public long calculateBaseDeduction() {
+        long baseDeduction = HOUSEHOLDER_BASE_DEDUCTION;
+
         if ( household.getSpouse()!= null ) {
-            deduction += 1500000;
+            baseDeduction += SPOUSE_BASE_DEDUCTION;
         }
-        
+
         for ( int i = 0; i < household.getDependent().length; i++ ) {
-            deduction += 1500000;
+            baseDeduction += DEPENDENT_BASE_DEDUCTION;
         }
-        
+        return baseDeduction;
+    }
+
+    public long calculateAdditionalDeduction() {
         // 장애인 공제
-        deduction += countDisabled() * 2000000;
-        
+        long additionalDeduction = household.countDisabled() * DISABLED_DEDUCTION;
+
         // 연령 공제
-        deduction += countSeniorPerson() * 1000000;
-        deduction += countChildren() * 1000000;
-        
-        return deduction;
+        additionalDeduction += household.countSeniorPerson() * SENIOR_DEDUCTION;
+        additionalDeduction += household.countChildren() * CHILD_DEDUCTION;
+
+        return additionalDeduction;
     }
     
     public long calculateCollectIncomeTax() {
@@ -71,11 +87,11 @@ public class TaxRefund {
         long standard = totalSalary - deduction;    // 과세표준
         long collectIncomeTax = 0;
 
-        if ( standard <= 12000000L ) {
+        if ( standard <= TAX_RATE_STANDARD_1 ) {
             collectIncomeTax = (long)( standard * 0.06 );
-        } else if ( standard <= 46000000L ) {
+        } else if ( standard <= TAX_RATE_STANDARD_2 ) {
             collectIncomeTax = (long)( standard * 0.15 );
-        } else if ( standard <= 88000000L ) {
+        } else if ( standard <= TAX_RATE_STANDARD_3 ) {
             collectIncomeTax = (long)( standard * 0.24 );
         } else {
             collectIncomeTax = (long)( standard * 0.35 );
@@ -90,67 +106,5 @@ public class TaxRefund {
         
         return refundMoney;
     }
-    
-    public int countDisabled() {
-        
-        int count = 0;
-        
-        if ( household.getHouseholder().isDisabled() ) {
-            count++;
-        }
-        
-        if ( household.getSpouse() != null && household.getSpouse().isDisabled() ) {
-            count++;
-        }
-        
-        for ( int i = 0; i < household.getDependent().length; i++ ) {
-            if ( household.getDependent()[i].isDisabled() ) {
-                count++;
-            }
-        }
-        
-        return count;
-    }
-    
-    public int countSeniorPerson() {
-        
-        int count = 0;
-        
-        if ( household.getHouseholder().getAge() >= 70 ) {
-            count++;
-        }
-        
-        if ( household.getSpouse() != null && household.getSpouse().getAge() >= 70 ) {
-            count++;
-        }
-        
-        for ( int i = 0; i < household.getDependent().length; i++ ) {
-            if ( household.getDependent()[i].getAge() >= 70 ) {
-                count++;
-            }
-        }
-        
-        return count;
-    }
-    
-    public int countChildren() {
-        
-        int count = 0;
-        
-        if ( household.getHouseholder().getAge() <= 6 ) {
-            count++;
-        }
-        
-        if ( household.getSpouse() != null && household.getSpouse().getAge() <= 6 ) {
-            count++;
-        }
-        
-        for ( int i = 0; i < household.getDependent().length; i++ ) {
-            if ( household.getDependent()[i].getAge() <= 6 ) {
-                count++;
-            }
-        }
-        
-        return count;
-    }
+
 }
