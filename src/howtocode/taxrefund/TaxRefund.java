@@ -2,17 +2,23 @@ package howtocode.taxrefund;
 
 public class TaxRefund {
 
-    private final long HOUSEHOLDER_BASE_DEDUCTION = 1500000;
-    private final long SPOUSE_BASE_DEDUCTION = 1500000;
-    private final long DEPENDENT_BASE_DEDUCTION = 1500000;
+    private static final long HOUSEHOLDER_BASE_DEDUCTION = 1500000;
+    private static final long SPOUSE_BASE_DEDUCTION = 1500000;
+    private static final long DEPENDENT_BASE_DEDUCTION = 1500000;
 
-    private final long DISABLED_DEDUCTION = 2000000;
-    private final long SENIOR_DEDUCTION = 1000000;
-    private final long CHILD_DEDUCTION = 1000000;
+    private static final long DISABLED_DEDUCTION = 2000000;
+    private static final long SENIOR_DEDUCTION = 1000000;
+    private static final long CHILD_DEDUCTION = 1000000;
 
-    private final long TAX_RATE_STANDARD_1 = 12000000L;
-    private final long TAX_RATE_STANDARD_2 = 46000000L;
-    private final long TAX_RATE_STANDARD_3 = 88000000L;
+    private static final long TAX_BASE_STANDARD_1 = 12000000L;
+    private static final long TAX_BASE_STANDARD_2 = 46000000L;
+    private static final long TAX_BASE_STANDARD_3 = 88000000L;
+
+    private static final float TAX_RATE_STANDARD_1 = 0.06f;
+    private static final float TAX_RATE_STANDARD_2 = 0.15f;
+    private static final float TAX_RATE_STANDARD_3 = 0.24f;
+    private static final float TAX_RATE_STANDARD_4 = 0.35f;
+
 
     private final Household household;    // 가구
     
@@ -27,84 +33,94 @@ public class TaxRefund {
         this.household        = household;
         this.totalSalary      = totalSalary;
         this.paidIncomeTax    = paidIncomeTax;
+
         this.deduction        = calculateDeduction();
         this.collectIncomeTax = calculateCollectIncomeTax();
         this.refundMoney      = calculateRefundMoney();
     }
 
-    public Household getHousehold() { return household; }
-
+    public Household getHousehold() {
+        return household;
+    }
     public long getTotalSalary() {
         return totalSalary;
     }
-
     public long getPaidIncomeTax() {
         return paidIncomeTax;
     }
-
     public long getDeduction() {
         return deduction;
     }
-
     public long getCollectIncomeTax() {
         return collectIncomeTax;
     }
-
     public long getRefundMoney() {
         return refundMoney;
     }
+
 
     public long calculateDeduction() {
         return calculateBaseDeduction() + calculateAdditionalDeduction();
     }
 
     public long calculateBaseDeduction() {
-        long baseDeduction = HOUSEHOLDER_BASE_DEDUCTION;
-
-        if ( household.getSpouse()!= null ) {
-            baseDeduction += SPOUSE_BASE_DEDUCTION;
-        }
-
-        for ( int i = 0; i < household.getDependent().length; i++ ) {
-            baseDeduction += DEPENDENT_BASE_DEDUCTION;
-        }
-        return baseDeduction;
+        return calculateHouseholderBaseDeduction() + calculateSpouseBaseDeduction() + calculateDependentBaseDeduction();
     }
+
+    public long calculateHouseholderBaseDeduction() {
+        return HOUSEHOLDER_BASE_DEDUCTION;
+    }
+
+    public long calculateSpouseBaseDeduction() {
+        if ( household.getSpouse() == null ) {
+            return 0;
+        }
+        return SPOUSE_BASE_DEDUCTION;
+    }
+
+    public long calculateDependentBaseDeduction() {
+        long dependentBaseDeduction = 0;
+        for ( int i = 0; i < household.getDependent().length; i++ ) {
+            dependentBaseDeduction += DEPENDENT_BASE_DEDUCTION;
+        }
+        return dependentBaseDeduction;
+    }
+
 
     public long calculateAdditionalDeduction() {
-        // 장애인 공제
-        long additionalDeduction = household.countDisabled() * DISABLED_DEDUCTION;
-
-        // 연령 공제
-        additionalDeduction += household.countSeniorPerson() * SENIOR_DEDUCTION;
-        additionalDeduction += household.countChildren() * CHILD_DEDUCTION;
-
-        return additionalDeduction;
+        return calculateDisabledDeduction() + calculateSeniorDeduction() + calculateChildrenDeduction();
     }
-    
+
+    public long calculateDisabledDeduction() {
+        return household.countDisabled() * DISABLED_DEDUCTION;
+    }
+
+    public long calculateSeniorDeduction() {
+        return household.countSeniorPerson() * SENIOR_DEDUCTION;
+    }
+
+    public long calculateChildrenDeduction() {
+        return household.countChildren() * CHILD_DEDUCTION;
+    }
+
     public long calculateCollectIncomeTax() {
-        
-        long standard = totalSalary - deduction;    // 과세표준
-        long collectIncomeTax = 0;
-
-        if ( standard <= TAX_RATE_STANDARD_1 ) {
-            collectIncomeTax = (long)( standard * 0.06 );
-        } else if ( standard <= TAX_RATE_STANDARD_2 ) {
-            collectIncomeTax = (long)( standard * 0.15 );
-        } else if ( standard <= TAX_RATE_STANDARD_3 ) {
-            collectIncomeTax = (long)( standard * 0.24 );
+        if ( calculateTaxBaseStandard() <= TAX_BASE_STANDARD_1 ) {
+            return (long)( calculateTaxBaseStandard() * TAX_RATE_STANDARD_1 );
+        } else if ( calculateTaxBaseStandard() <= TAX_BASE_STANDARD_2 ) {
+            return (long)( calculateTaxBaseStandard() * TAX_RATE_STANDARD_2 );
+        } else if ( calculateTaxBaseStandard() <= TAX_BASE_STANDARD_3 ) {
+            return (long)( calculateTaxBaseStandard() * TAX_RATE_STANDARD_3 );
         } else {
-            collectIncomeTax = (long)( standard * 0.35 );
+            return (long)( calculateTaxBaseStandard() * TAX_RATE_STANDARD_4 );
         }
-        
-        return collectIncomeTax;
     }
-    
+
+    private long calculateTaxBaseStandard() {
+        return totalSalary - deduction;
+    }
+
     public long calculateRefundMoney() {
-        
-        long refundMoney = collectIncomeTax - paidIncomeTax;
-        
-        return refundMoney;
+        return collectIncomeTax - paidIncomeTax;
     }
 
 }
