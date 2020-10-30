@@ -10,9 +10,9 @@ public class TaxRefund {
     private static final long SENIOR_DEDUCTION = 1000000;
     private static final long CHILD_DEDUCTION = 1000000;
 
-    private static final long TAX_BASE_STANDARD_1 = 12000000L;
-    private static final long TAX_BASE_STANDARD_2 = 46000000L;
-    private static final long TAX_BASE_STANDARD_3 = 88000000L;
+    private static final long TAX_BASE_STANDARD_1 = 12000000;
+    private static final long TAX_BASE_STANDARD_2 = 46000000;
+    private static final long TAX_BASE_STANDARD_3 = 88000000;
 
     private static final float TAX_RATE_STANDARD_1 = 0.06f;
     private static final float TAX_RATE_STANDARD_2 = 0.15f;
