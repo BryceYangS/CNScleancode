@@ -5,18 +5,18 @@ public class Person {
     private static final int SENIOR_AGE = 70;
     private static final int CHILD_AGE = 6;
 
-    private String name;
-    private int age;
-    private boolean disabled;
-    private boolean isChild;
-    private boolean isSenior;
+    private final String name;
+    private final int age;
+    private final boolean disabled;
+    private final boolean isChild;
+    private final boolean isSenior;
 
     public Person( String name, int age, boolean disabled ) {
-        this.name = name;
-        this.age = age;
+        this.name     = name;
+        this.age      = age;
         this.disabled = disabled;
-        this.isChild = age <= CHILD_AGE ? true : false;
-        this.isSenior = age >= SENIOR_AGE ? true : false;
+        this.isChild  = ( age <= CHILD_AGE );
+        this.isSenior = ( age >= SENIOR_AGE );
     }
 
     public String getName() {

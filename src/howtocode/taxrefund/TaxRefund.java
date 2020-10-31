@@ -3,12 +3,12 @@ package howtocode.taxrefund;
 public class TaxRefund {
 
     private static final long HOUSEHOLDER_BASE_DEDUCTION = 1500000;
-    private static final long SPOUSE_BASE_DEDUCTION = 1500000;
-    private static final long DEPENDENT_BASE_DEDUCTION = 1500000;
+    private static final long SPOUSE_BASE_DEDUCTION      = 1500000;
+    private static final long DEPENDENT_BASE_DEDUCTION   = 1500000;
 
     private static final long DISABLED_DEDUCTION = 2000000;
-    private static final long SENIOR_DEDUCTION = 1000000;
-    private static final long CHILD_DEDUCTION = 1000000;
+    private static final long SENIOR_DEDUCTION   = 1000000;
+    private static final long CHILD_DEDUCTION    = 1000000;
 
     private static final long TAX_BASE_STANDARD_1 = 12000000;
     private static final long TAX_BASE_STANDARD_2 = 46000000;
@@ -33,30 +33,17 @@ public class TaxRefund {
         this.household        = household;
         this.totalSalary      = totalSalary;
         this.paidIncomeTax    = paidIncomeTax;
-
         this.deduction        = calculateDeduction();
         this.collectIncomeTax = calculateCollectIncomeTax();
         this.refundMoney      = calculateRefundMoney();
     }
 
-    public Household getHousehold() {
-        return household;
-    }
-    public long getTotalSalary() {
-        return totalSalary;
-    }
-    public long getPaidIncomeTax() {
-        return paidIncomeTax;
-    }
-    public long getDeduction() {
-        return deduction;
-    }
-    public long getCollectIncomeTax() {
-        return collectIncomeTax;
-    }
-    public long getRefundMoney() {
-        return refundMoney;
-    }
+    public Household getHousehold() { return household; }
+    public long getTotalSalary() { return totalSalary; }
+    public long getPaidIncomeTax() { return paidIncomeTax; }
+    public long getDeduction() { return deduction; }
+    public long getCollectIncomeTax() { return collectIncomeTax; }
+    public long getRefundMoney() { return refundMoney; }
 
 
     public long calculateDeduction() {
