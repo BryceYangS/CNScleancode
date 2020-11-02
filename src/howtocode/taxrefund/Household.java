@@ -18,15 +18,14 @@ public class Household {
 
     public int countDisabled() {
 
-        int count = 0;
-        count = householder.isDisabled() ? count + 1 : count;
+        int count = householder.isDisabled() ? 1 : 0;
 
         if ( spouse != null ) {
             count = spouse.isDisabled() ? count + 1 : count;
         }
 
-        for ( int i = 0; i < dependent.length; i++ ) {
-            count = dependent[i].isDisabled() ? count + 1 : count;
+        for (Person person : dependent) {
+            count = person.isDisabled() ? count + 1 : count;
         }
 
         return count;
@@ -34,15 +33,14 @@ public class Household {
 
     public int countChildren() {
 
-        int count = 0;
-        count = householder.isChild() ? count + 1 : count;
+        int count = householder.isChild() ? 1 : 0;
 
         if ( spouse != null) {
             count = spouse.isChild() ? count + 1 : count;
         }
 
-        for ( int i = 0; i < dependent.length; i++ ) {
-            count = dependent[i].isChild() ? count + 1 : count;
+        for (Person person : dependent) {
+            count = person.isChild() ? count + 1 : count;
         }
 
         return count;
@@ -50,15 +48,14 @@ public class Household {
 
     public int countSeniorPerson() {
 
-        int count = 0;
-        count = householder.isSenior() ? count + 1 : count;
+        int count = householder.isSenior() ? 1 : 0;
 
         if ( spouse != null ) {
             count = spouse.isSenior()? count + 1 : count;
         }
 
-        for ( int i = 0; i < dependent.length; i++ ) {
-            count = dependent[i].isSenior() ? count + 1 : count;
+        for (Person person : dependent) {
+            count = person.isSenior() ? count + 1 : count;
         }
 
         return count;
