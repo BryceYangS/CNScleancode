@@ -1,7 +1,9 @@
 package howtocode.taxrefund;
 
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -11,29 +13,32 @@ public class TaxRefundTest {
 
     public static void main( String[] args ) {
 
-        List<TaxRefund> taxRefunds = new ArrayList<>();
-
-        // 김철수 가구
-        Household household = new Household(
-                new Person( "김철수", 40, false ),
-                new Person( "최영희", 38, true ),
-                new Person[] {new Person( "김영감", 72, false ),
-                              new Person( "문점순", 68, false ),
-                              new Person( "김동수", 10, false ),
-                              new Person( "김나나", 6, false )});
-        taxRefunds.add(new TaxRefund( household, 38200000, 5000000 ));
-
-        // 박초롱 가구
-        Household household2 = new Household(
-                new Person( "박초롱", 40, true ),
-                null,
-                new Person[] { new Person( "박돌쇠", 80, true ),
-                               new Person( "서미미", 80, false ) });
-        taxRefunds.add(new TaxRefund( household2,58600000, 8500000 ));
+        List<TaxRefund> taxRefunds = loadData();
 
         for (TaxRefund tax : taxRefunds) {
             printTaxRefundReport(tax);
         }
+    }
+
+    static List loadData() {
+        Household household = new Household(
+                new Person( "김철수", 40, false ),
+                new Person( "최영희", 38, true ),
+                new Person[] {new Person( "김영감", 72, false ),
+                        new Person( "문점순", 68, false ),
+                        new Person( "김동수", 10, false ),
+                        new Person( "김나나", 6, false )});
+
+        Household household2 = new Household(
+                new Person( "박초롱", 40, true ),
+                null,
+                new Person[] { new Person( "박돌쇠", 80, true ),
+                        new Person( "서미미", 80, false ) });
+
+        return Arrays.asList(
+                new TaxRefund( household, 38200000, 5000000 ),
+                new TaxRefund( household2,58600000, 8500000 )
+        );
     }
 
     static void printTaxRefundReport(TaxRefund tax) {
